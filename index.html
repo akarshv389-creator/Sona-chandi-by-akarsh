@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b12">
+<title>Sona Chandi by Akarsh</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  padding: 22px;
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at 10% 5%, #57421e 0%, transparent 35%),
+    radial-gradient(circle at 90% 90%, #18334b 0%, transparent 35%),
+    #090b12;
+}
+
+header {
+  padding: 20px 5px 30px;
+}
+
+.logo {
+  font-size: 12px;
+  color: #e5c47c;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin-top: 12px;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
+
+h1 span {
+  color: #e9c879;
+}
+
+.subtitle {
+  color: #999;
+  margin-top: 8px;
+}
+
+.card {
+  padding: 22px;
+  margin-bottom: 18px;
+  border: 1px solid #ffffff20;
+  border-radius: 24px;
+  background: linear-gradient(135deg,
+    #ffffff15, #ffffff05);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 35px #0005;
+}
+
+.card-title {
+  color: #e8c777;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 17px 0;
+}
+
+.rate h2 {
+  font-size: 22px;
+}
+
+.rate p {
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.price {
+  color: #f0d28b;
+  font-size: 19px;
+  font-weight: bold;
+  text-align: right;
+}
+
+input, select {
+  width: 100%;
+  padding: 15px;
+  margin: 9px 0;
+  border: 1px solid #ffffff25;
+  border-radius: 13px;
+  outline: none;
+  background: #ffffff0c;
+  color: white;
+  font-size: 15px;
+}
+
+select option {
+  background: #111522;
+}
+
+label {
+  color: #bbb;
+  font-size: 13px;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(120deg,
+    #f0d28b, #ad7b31);
+  color: #17120a;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+#result {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 15px;
+  background: #e8c77715;
+  border: 1px solid #e8c77740;
+}
+
+#result h2 {
+  color: #f0d28b;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  padding: 20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ PREMIUM GOLD & SILVER ✦</div>
+  <h1>SONA <span>CHANDI</span></h1>
+  <p class="subtitle">by Akarsh · Your precious metals companion</p>
+</header>
+
+<section class="card">
+  <div class="card-title">✦ MARKET RATES</div>
+
+  <div class="rate">
+    <div>
+      <h2>🥇 Gold</h2>
+      <p>24 Karat · Per Gram</p>
+    </div>
+    <div class="price" id="goldDisplay">₹15,000</div>
+  </div>
+
+  <div class="rate">
+    <div>
+      <h2>🥈 Silver</h2>
+      <p>999 Purity · Per Gram</p>
+    </div>
+    <div class="price" id="silverDisplay">₹200</div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-title">✦ UPDATE RATES</div>
+
+  <label>24K Gold rate per gram (₹)</label>
+  <input id="goldRate" type="number" value="15000">
+
+  <label>Silver rate per gram (₹)</label>
+  <input id="silverRate" type="number" value="200">
+
+  <button onclick="updateRates()">UPDATE RATES</button>
+</section>
+
+<section class="card">
+  <div class="card-title">✦ GOLD CALCULATOR</div>
+
+  <label>Select purity</label>
+  <select id="purity">
+    <option value="24">24K Gold</option>
+    <option value="22">22K Gold</option>
+    <option value="18">18K Gold</option>
+  </select>
+
+  <label>Weight in grams</label>
+  <input id="weight" type="number" placeholder="Enter weight">
+
+  <button onclick="calculate()">CALCULATE VALUE</button>
+
+  <div id="result">
+    Estimated Gold Value
+    <h2 id="total">₹0</h2>
+    <p id="details"></p>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-title">✦ ABOUT</div>
+  <h2>Sona Chandi</h2>
+  <p class="subtitle">
+    A premium precious metals calculator,
+    designed by Akarsh.
+  </p>
+</section>
+
+<footer>
+  MADE WITH ✦ BY AKARSH
+  <br><br>
+  Rates are manually entered estimates.
+</footer>
+
+<script>
+function updateRates() {
+  const gold = Number(document.getElementById("goldRate").value);
+  const silver = Number(document.getElementById("silverRate").value);
+
+  if (gold <= 0 || silver <= 0 ||
+      !Number.isFinite(gold) || !Number.isFinite(silver)) {
+    alert("Please enter valid rates!");
+    return;
+  }
+
+  document.getElementById("goldDisplay").textContent =
+    "₹" + gold.toLocaleString("en-IN");
+
+  document.getElementById("silverDisplay").textContent =
+    "₹" + silver.toLocaleString("en-IN");
+
+  alert("Rates updated successfully!");
+}
+
+function calculate() {
+  const gold = Number(document.getElementById("goldRate").value);
+  const weight = Number(document.getElementById("weight").value);
+  const purity = Number(document.getElementById("purity").value);
+
+  if (!Number.isFinite(gold) || gold <= 0 ||
+      !Number.isFinite(weight) || weight <= 0) {
+    alert("Please enter valid values!");
+    return;
+  }
+
+  const total = (gold * purity / 24) * weight;
+
+  document.getElementById("total").textContent =
+    "₹" + total.toLocaleString("en-IN", {
+      maximumFractionDigits: 2
+    });
+
+  document.getElementById("details").textContent =
+    purity + "K Gold · " + weight + " Grams";
+
+  document.getElementById("result").style.display = "block";
+}
+</script>
+
+</body>
+</html>
